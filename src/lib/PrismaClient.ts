@@ -1,8 +1,14 @@
 import { ReadOnlyClient } from "@/lib/type";
 import { Prisma } from "@prisma/client";
 
-export type PrismaRoClient = ReadOnlyClient & { __prisma_ro_client: never };
+const prismaRoClientSymbol = Symbol("prisma_ro_client");
 
-export type PrismaRwClient = Prisma.TransactionClient & { __prisma_ro_client: never; __prisma_rw_client: never };
+const prismaRwClientSymbol = Symbol("prisma_rw_client");
 
-export type PrismaTxClient = PrismaRwClient & { __prisma_tx_client: never };
+const prismaTxClientSymbol = Symbol("prisma_tx_client");
+
+export type PrismaRoClient = ReadOnlyClient & { [prismaRoClientSymbol]: never };
+
+export type PrismaRwClient = Prisma.TransactionClient & { [prismaRoClientSymbol]: never; [prismaRwClientSymbol]: never };
+
+export type PrismaTxClient = PrismaRwClient & { [prismaTxClientSymbol]: never };
