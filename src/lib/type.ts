@@ -19,8 +19,4 @@ type ClientExtension = {
 
 type WithReplica<T> = T & ClientExtension;
 
-/**
- * @name 拡張後のPrismaClient
- * @description prismaは拡張すると $on / $use が除外される
- */
 export type ExtendedPrismaClient = WithReplica<Omit<PrismaClient, "$on" | "$use">>;
